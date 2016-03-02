@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsTextItem>
 #include <QCloseEvent>
+#include <QTimer>
+#include <QElapsedTimer>
 
 namespace Ui {
 class Game;
@@ -29,6 +31,8 @@ private slots:
 
     void newGame();
 
+    void watchRefresh();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -42,6 +46,9 @@ private:
     int correct;
     int wrong;
     int all;
+    qint64 seconds;
+    QTimer *stopwatch;
+    QElapsedTimer *elapsed;
     int currentColor;
     int currentPallete;
     int gameMode;

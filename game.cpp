@@ -12,6 +12,8 @@ Game::Game(QWidget *parent) :
     srand(time(NULL));
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
+    stopwatch = new QTimer(this);
+    elapsed = new QElapsedTimer;
 
     QPen outline(Qt::black);
 
@@ -33,6 +35,7 @@ Game::Game(QWidget *parent) :
     text = new QGraphicsTextItem("Barva");
     scene->addItem(rectangle);
     scene->addItem(text);
+    connect(stopwatch,SIGNAL(timeout()),this,SLOT(watchRefresh()));
 
     text->setPos(0,150);
 
@@ -45,9 +48,18 @@ Game::~Game()
     delete ui;
 }
 
+void Game::watchRefresh(){
+    seconds = elapsed->elapsed()/100;
+    ui->stopwatchText->setText(QString::number(seconds));
+}
+
 void Game::on_trueBtn_clicked()
 {
     decision(true);
+    if(!stopwatch->isActive()){
+        stopwatch->start();
+        elapsed->start();
+    }
 }
 
 void Game::on_falseBtn_clicked()
